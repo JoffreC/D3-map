@@ -34,9 +34,34 @@ export class MapComponent implements OnInit {
       .then(data => {
         this.geoJson = data
         var provinces = this.geoJson.features.map((d: { properties: { dpa_despro: string; }; }) => d.properties.dpa_despro);
-        var colorScale = d3.scaleOrdinal()
+        var colorScale:any = d3.scaleOrdinal()
           .domain(provinces)
-          .range(["#c7d3ec", "#a5b8db", "#879cc4", "#677795", "#5a6782"])
+          .range([
+              "#0000FF",
+              "#0000CC",
+              "#000099",
+              "#000066",
+              "#000033",
+              "#000000",
+              "#3333FF",
+              "#6666FF",
+              "#9999FF",
+              "#CCCCFF",
+              "#FFFFFF",
+              "#6699FF",
+              "#3366FF",
+              "#0033FF",
+              "#99CCFF",
+              "#66CCFF",
+              "#3399FF",
+              "#0066FF",
+              "#66FFFF",
+              "#33CCFF",
+              "#00CCFF",
+              "#00FFFF",
+              "#33FFFF",
+              "#66CCFF"
+            ])
         this.svg = d3.select('figure#map')
           .append("svg")
           .attr("width", this.width + (this.margin * 2))
@@ -45,9 +70,11 @@ export class MapComponent implements OnInit {
           .style("background-color", "lightblue")
           .selectAll('path')
           .data(this.geoJson.features)
+          // .append('text')
+          // .text((d:any) => this.geoJson.features.properties.dpa_despro)
           .join('path')
           .attr('d', geoGenerator)
-          // .attr("fill", (d: any) => (colorScale(d)))
+          .attr("fill", (d: any, i:any) => (colorScale(i)))
       })
 
   }
