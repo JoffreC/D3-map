@@ -70,11 +70,24 @@ export class MapComponent implements OnInit {
           .style("background-color", "lightblue")
           .selectAll('path')
           .data(this.geoJson.features)
-          // .append('text')
-          // .text((d:any) => this.geoJson.features.properties.dpa_despro)
           .join('path')
           .attr('d', geoGenerator)
           .attr("fill", (d: any, i:any) => (colorScale(i)))
+          .append("title")
+          .text((d: any) => d.properties.dpa_despro); // Puedes cambiar d.properties.dpa_despro por el contenido que quieras mostrar
+
+        // Agregar evento de mouseover para mostrar el popover
+        this.svg.on("mouseover", (event:any, d:any) => {
+          var tooltip = d3.select("#tooltip");
+          tooltip.html("<div>" + d.properties.dpa_despro + "</div>")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 15) + "px")
+            .style("opacity", 1);
+        })
+          .on("mouseout", function() {
+            var tooltip = d3.select("#tooltip");
+            tooltip.style("opacity", 0);
+          });
       })
 
   }
